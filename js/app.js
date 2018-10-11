@@ -4,14 +4,27 @@ const moves = document.querySelector(".moves");
 let resetBtn = document.querySelector(".restart");
 const stars = document.querySelector(".stars");
 let modalBody = document.querySelector(".modal-body");
+let highScores = document.querySelector(".highScores");
 let starRating="";
 const playAgainBtn = document.querySelector(".play-again");
+const startPlayBtn = document.querySelector(".start-game");
 let gameTimer = document.querySelector(".game-timer");
 let seconds = 0; let minutes = 0;
 let secs = document.getElementById("seconds");
 let mins = document.getElementById("minutes");
-let myTimer;
+let userDisplay = document.querySelector(".userName");
+let highScoreTable = " ";
 
+let myTimer;
+//checking if localstorage exists and store scores in an array
+let scoresArray = localStorage.getItem('gameScores') ? JSON.parse(localStorage.getItem('gameScores')) : [];
+localStorage.setItem("gameScores", JSON.stringify(scoresArray));
+const scoreData = JSON.parse(localStorage.getItem("gameScores"));
+
+//storing the names of the players in the array
+let userNamesArray = localStorage.getItem('nameScores') ? JSON.parse(localStorage.getItem('nameScores')) : [];
+localStorage.setItem("nameScores", JSON.stringify(userNamesArray));
+const nameData = JSON.parse(localStorage.getItem("nameScores"));
 
 //moves counter
 let movesCount = 0;
@@ -24,15 +37,15 @@ const matchCards = [];
 
 //storing all the cards in an array
 let cards = ['fas fa-gem','fas fa-paper-plane','fa fa-anchor','fa fa-bolt','fa fa-cube','fa fa-anchor','fa fa-leaf','fa fa-bicycle','fas fa-gem','fas fa-paper-plane','fa fa-anchor','fa fa-bolt','fa fa-cube','fa fa-anchor','fa fa-leaf','fa fa-bicycle'];
-//shuffle(cards);
-
 
 /*
  * Start the game
  */
+getUserInfo();
+
 //start the timer
-startTimer();
-startTheGame();
+//startTimer();
+//startTheGame();
 
 //starting the game
  function startTheGame(){
@@ -42,11 +55,28 @@ startTheGame();
     //select all the cards
     let card = document.querySelectorAll(".card");
     
-    
-
     //go through each card and show them by click
     clickCards(card);
  }
+
+ //get the user info function before starting the game
+ function getUserInfo(){    
+    $("#gameStartModal").modal('show');
+    startPlayBtn.addEventListener('click', function(){
+        $("#gameStartModal").modal('hide');
+        if(document.getElementById('userNameInput').value){
+            userDisplay.innerHTML = "Hi, <strong>"+document.getElementById('userNameInput').value+"</strong>";
+            userNamesArray.push(document.getElementById('userNameInput').value);
+            localStorage.setItem("nameScores", JSON.stringify(userNamesArray));
+        }
+        else {
+            userDisplay.innerHTML = "Hi, <strong>guest</strong>";//if a player does not enter a name then use 'guest' as placeholder
+        }
+        startTimer();
+        startTheGame();
+    });
+}
+
 
  //Timer function
  function startTimer(){
@@ -64,7 +94,6 @@ startTheGame();
     if(minutes>=60){
         minutes=0;
         hours++;
-    
     }
      }, 1000);
     
@@ -83,7 +112,7 @@ function clearTimerData(){
 //generate card grid function
 function generateGameBoard(){
         //Shuffle cards
-        shuffle(cards);
+        //shuffle(cards);
     for(let i = 0; i < cards.length; i++){
         const lst = document.createElement("li");
         const icn = document.createElement("i");
@@ -147,7 +176,7 @@ function gameOver(){
     setTimeout(function() {
         if(cards.length === matchCards.length){
             clearInterval(myTimer);
-            scoreModal(); //using Jquery to open the modal after the game is over
+            scoreModal(); //open the modal after the game is over
         }       
     }  , 250);
 }
@@ -202,6 +231,7 @@ function resetGameStats(){
 function movesCounter(){
     movesCount++;
     moves.innerHTML = movesCount;
+
         //Start the Rating System and pass the number of moves to the rating function
         ratingSystem(movesCount);
 }
@@ -226,9 +256,21 @@ function ratingSystem(movesCount){
 
 //Modal content
 function scoreModal(){
-    modalBody.innerHTML = "<p><strong>Congratulations! You Won!</strong></p> <p>With "+movesCount+" moves and "+starRating+" in "+minutes+" minutes "+seconds+" seconds </p> Woooo!";
+    
+            //push the score into the localstorage array
+            scoresArray.push(movesCount);
+            localStorage.setItem("gameScores", JSON.stringify(scoresArray));
+            
+    modalBody.innerHTML = "<h5><strong>Congratulations! "+document.getElementById("userNameInput").value+", You Won!</strong></h5> <p>With "+movesCount+" moves and "+starRating+" in "+minutes+" m "+seconds+" s </p>\
+    That's Udacious!";
+
+    leaderBoard();
     $("#scoreModal").modal();
     playAgainBtn.addEventListener('click', function(){
+        //push the same name of the player to the array if play again is pressed;splitting the string to get the name from the string "Hi, name"
+        userNamesArray.push(userDisplay.innerText.split(", ")[1]);
+        localStorage.setItem("nameScores", JSON.stringify(userNamesArray));
+        
         $('#scoreModal').modal('hide');
         //stop timer
         clearInterval(myTimer);
@@ -239,4 +281,16 @@ function scoreModal(){
         //start the game again
         startTheGame();
     });
+}
+
+function leaderBoard(){
+    
+    highScores.innerHTML = '<table class="table"><thead><tr><th scope="col">#</th><th scope="col">Name</th><th scope="col">Scores</th></tr></thead><tbody>'+addHighScores()+'</tbody></table>';
+}
+
+function addHighScores(){
+    for(let i = 0; i < userNamesArray.length; i++){
+        highScoreTable = highScoreTable + '<tr><th scope="row">'+(i+1)+'</th><td>'+userNamesArray[i]+'</td><td>'+scoresArray[i]+'</td></tr>';
+    }
+    return highScoreTable;
 }
