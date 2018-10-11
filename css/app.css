@@ -14,11 +14,12 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    font-family: 'Roboto',sans-serif;
 }
 
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
-    font-family: 'Coda', cursive;
+    background: #e1e1e1; 
+    font-family: 'Roboto',sans-serif;
 }
 
 .container {
@@ -29,21 +30,27 @@ body {
 }
 
 h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
+    font-family: 'Roboto',sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 3.4em 0 1.4em 0;
+    font-size: 20px;
+    letter-spacing: 0.5em;
 }
 
 /*
  * Styles for the deck of cards
  */
-
+.game-grid{
+    margin:0 0 100px 0;
+}
 .deck {
     width: 660px;
     min-height: 680px;
-    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    background: #ffffff;
     padding: 32px;
-    border-radius: 10px;
-    box-shadow: 1px 3px 7px 0 rgba(46, 61, 73, 0.5);
+    border-radius: 40px;
+    box-shadow: 17px 22px 34px 0 rgb(204, 200, 193);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -54,21 +61,22 @@ h1 {
 .deck .card {
     height: 125px;
     width: 125px;
-    background: #2e3d49;
+    background: #d4d1cb;
     font-size: 0;
     color: #ffffff;
-    border-radius: 8px;
+    border-radius: 50px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0px 3px 7px 0 rgba(46, 61, 73, 0.3);
+    /*box-shadow: 2px 2px 41px 0 rgb(139, 158, 189);*/
 }
 
 .deck .card.open {
-    transform: rotateY(0);
+    transform: rotateY(180deg);
     background: #02b3e4;
     cursor: default;
+    animation:all .5s;
 }
 
 .deck .card.show {
@@ -77,9 +85,56 @@ h1 {
 
 .deck .card.match {
     cursor: default;
-    background: #02ccba;
+    background: #91cc02;
     font-size: 33px;
 }
+
+.deck .card.unclickable {
+    pointer-events: none;
+}
+.deck .card.match {
+    animation: bounceIn 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+  
+  @keyframes bounceIn {
+    0% {
+      transform: scale(0.1);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+.deck .card.nomatch {
+    background: #E32A53;
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+  
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+  
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+  
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
 
 /*
  * Styles for the Score Panel
@@ -87,8 +142,8 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
-    margin-bottom: 10px;
+    width: 500px;
+    background: #fdecd2;
 }
 
 .score-panel .stars {
@@ -106,4 +161,69 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+.modal-body {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-bottom: 1px solid #eee;
+}
+.modal-body .game-instr {
+    font-size: 0.9em;
+    text-align: left;
+}
+input.inputName{
+    padding: 8px 6px;
+    border: 1px solid #d2c8c8;
+    font-size: 13px;
+    width: 60%;
+}
+.modal-title{
+    font-weight:bold;
+}
+.info-panel{
+    text-align: right;
+}
+.score-pad, .info-panel{
+    padding:12px 26px;
+}
+#gameStartModal{
+    pointer-events: none; /*to disable the clicking outside modal at the start of the game to dismiss it*/
+}
+/* 
+ * Media queries begin 
+ */
+@media screen and (max-width: 768px) {
+    .deck{
+        width:600px;
+    }
+}
+@media screen and (max-width: 560px) {
+    .deck{
+        width:500px;
+    }
+    .deck .card {
+        height: 100px;
+        width: 100px;
+        border-radius: 32px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .deck{
+        width:400px;
+    }
+    .deck .card {
+        height: 79px;
+        width: 79px;
+        border-radius: 26px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .deck{
+        width:400px;
+    }
+}
+@media screen and (max-width: 449px) {
+ 
 }
