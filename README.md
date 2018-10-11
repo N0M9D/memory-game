@@ -2,8 +2,23 @@
 
 ## Table of Contents
 
+* [How the Game works](#howitworks)
+* [Additional Features](#additionalfeatures)
 * [Instructions](#instructions)
 * [Contributing](#contributing)
+
+## How the Game works?
+
+The game is simply a find and match game. It contains sixteen cards with a pair of 8 cards distributed all over the grid in a random fashion. The user has to cilck on two cards to display their symbols hidden behind them. And if the symbols of cards match then those cards remain open. If the symbols are not the same the cards are flipped down again. Like this the user has to find and match all the same cards.
+
+When the user is able to find all the same cards, the game finishes and displays the number of moves and time taken to complete the game.
+
+## Additional features
+
+A scoreboard is displayed at the end showing scores of previously played games. Although it is not functioning properly currently.
+An opening modal is implemented which asks users their name and displays the game instructions.
+User's name is displayed at the top right hand side.
+
 
 ## Instructions
 
