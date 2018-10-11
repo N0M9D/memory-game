@@ -112,7 +112,7 @@ function clearTimerData(){
 //generate card grid function
 function generateGameBoard(){
         //Shuffle cards
-        //shuffle(cards);
+        shuffle(cards);
     for(let i = 0; i < cards.length; i++){
         const lst = document.createElement("li");
         const icn = document.createElement("i");
