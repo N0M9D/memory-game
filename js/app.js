@@ -36,7 +36,7 @@ const openCards = [];
 const matchCards = [];
 
 //storing all the cards in an array
-let cards = ['fas fa-gem','fas fa-paper-plane','fa fa-anchor','fa fa-bolt','fa fa-cube','fa fa-anchor','fa fa-leaf','fa fa-bicycle','fas fa-gem','fas fa-paper-plane','fa fa-anchor','fa fa-bolt','fa fa-cube','fa fa-anchor','fa fa-leaf','fa fa-bicycle'];
+let cards = ['fas fa-gem','fas fa-paper-plane','fa fa-anchor','fa fa-bolt','fa fa-cube','fa fa-bomb','fa fa-leaf','fa fa-bicycle','fas fa-gem','fas fa-paper-plane','fa fa-anchor','fa fa-bolt','fa fa-cube','fa fa-bomb','fa fa-leaf','fa fa-bicycle'];
 
 /*
  * Start the game
